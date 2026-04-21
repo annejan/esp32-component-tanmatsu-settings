@@ -1,0 +1,7 @@
+description: GUI menu
+url: https://github.com/nicolai-electronics/esp32-component-tanmatsu-settings
+repository: git://git@github.com:nicolai-electronics/esp32-component-tanmatsu-settings.git
+issues: https://github.com/nicolai-electronics/esp32-component-tanmatsu-settings/issues
+dependencies:
+  idf: ">=5.3"
+license: "MIT"
