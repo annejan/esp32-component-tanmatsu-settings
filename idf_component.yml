@@ -1,4 +1,4 @@
-description: GUI menu
+description: Tanmatsu settings component for reading and writing settings stored in the NVS partition
 url: https://github.com/nicolai-electronics/esp32-component-tanmatsu-settings
 repository: git://git@github.com:nicolai-electronics/esp32-component-tanmatsu-settings.git
 issues: https://github.com/nicolai-electronics/esp32-component-tanmatsu-settings/issues
