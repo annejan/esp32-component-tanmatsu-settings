@@ -130,6 +130,61 @@ esp_err_t nvs_settings_set_u32(const char* key, uint32_t value) {
     return res;
 }
 
+esp_err_t nvs_settings_get_i32(const char* key, int32_t default_value, int32_t* out_value) {
+    if (key == NULL || out_value == NULL) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    nvs_handle_t nvs_handle;
+    esp_err_t    res = nvs_open(NVS_NAMESPACE, NVS_READONLY, &nvs_handle);
+    if (res != ESP_OK) {
+        *out_value = default_value;
+        return res;
+    }
+    int32_t value;
+    res = nvs_get_i32(nvs_handle, key, &value);
+    if (res != ESP_OK) {
+        *out_value = default_value;
+        nvs_close(nvs_handle);
+        return res;
+    }
+    nvs_close(nvs_handle);
+
+    *out_value = value;
+    return res;
+}
+
+esp_err_t nvs_settings_set_i32(const char* key, int32_t value) {
+    if (key == NULL) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    nvs_handle_t nvs_handle;
+    esp_err_t    res = nvs_open(NVS_NAMESPACE, NVS_READWRITE, &nvs_handle);
+    if (res != ESP_OK) {
+        return res;
+    }
+    res = nvs_set_i32(nvs_handle, key, value);
+    if (res != ESP_OK) {
+        nvs_close(nvs_handle);
+        return res;
+    }
+    nvs_close(nvs_handle);
+    return res;
+}
+
+esp_err_t nvs_settings_get_bool(const char* key, bool default_value, bool* out_value) {
+    if (out_value == NULL) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    uint8_t   value;
+    esp_err_t res = nvs_settings_get_u8(key, default_value ? 1 : 0, &value);
+    *out_value    = (value != 0);
+    return res;
+}
+
+esp_err_t nvs_settings_set_bool(const char* key, bool value) {
+    return nvs_settings_set_u8(key, value ? 1 : 0);
+}
+
 esp_err_t nvs_settings_get_percentage(const char* key, uint8_t default_value, uint8_t* out_percentage) {
     esp_err_t res = nvs_settings_get_u8(key, default_value, out_percentage);
     if (res != ESP_OK) {

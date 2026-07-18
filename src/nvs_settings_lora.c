@@ -45,6 +45,30 @@ esp_err_t nvs_settings_set_lora_power(uint8_t power) {
     return nvs_settings_set_u8("lora.power", power);
 }
 
+esp_err_t nvs_settings_get_lora_offset(int32_t* out_offset) {
+    return nvs_settings_get_i32("lora.offset", 0, out_offset);
+}
+
+esp_err_t nvs_settings_set_lora_offset(int32_t offset) {
+    return nvs_settings_set_i32("lora.offset", offset);
+}
+
+esp_err_t nvs_settings_get_lora_automatic_offset(bool* out_enabled) {
+    return nvs_settings_get_bool("lora.autooffset", true, out_enabled);
+}
+
+esp_err_t nvs_settings_set_lora_automatic_offset(bool enabled) {
+    return nvs_settings_set_bool("lora.autooffset", enabled);
+}
+
+esp_err_t nvs_settings_get_lora_low_data_rate_optimization(bool* out_enabled) {
+    return nvs_settings_get_bool("lora.ldro", false, out_enabled);
+}
+
+esp_err_t nvs_settings_set_lora_low_data_rate_optimization(bool enabled) {
+    return nvs_settings_set_bool("lora.ldro", enabled);
+}
+
 bool nvs_settings_get_lora_configured(void) {
     uint32_t  temporary;
     esp_err_t res = nvs_settings_get_u32("lora.freq", 0, &temporary);
