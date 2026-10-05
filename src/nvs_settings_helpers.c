@@ -207,7 +207,10 @@ esp_err_t nvs_settings_set_percentage(const char* key, uint8_t percentage) {
 }
 
 esp_err_t nvs_settings_get_string(const char* key, const char* default_value, char* out_value, size_t max_length) {
-    if (key == NULL || out_value == NULL || max_length == 0) {
+    // With no buffer and a length of 0, only check whether the key exists
+    // (as nvs_settings_get_owner_nickname_configured() does).
+    bool const exists_only = out_value == NULL && max_length == 0;
+    if (key == NULL || (!exists_only && (out_value == NULL || max_length == 0))) {
         return ESP_ERR_INVALID_ARG;
     }
     nvs_handle_t nvs_handle;
@@ -221,7 +224,8 @@ esp_err_t nvs_settings_get_string(const char* key, const char* default_value, ch
     }
     size_t size = 0;
     res         = nvs_get_str(nvs_handle, key, NULL, &size);
-    if (max_length == 0) {  // Check if key exists in NVS without actually fetching value
+    if (exists_only) {
+        nvs_close(nvs_handle);
         return res;
     }
     if (res != ESP_OK || size > max_length) {
